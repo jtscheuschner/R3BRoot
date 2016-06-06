@@ -11,7 +11,8 @@
  * */
 
 extern "C" {
-#include "/home/bloeher/git/R3BRoot/r3bsource/ext_h101_full.h"
+//#include "/home/bloeher/git/R3BRoot/r3bsource/ext_h101_full.h"
+#include "/u/jtscheus/r3broot/R3BRoot/r3bsource/ext_h101.h"
 }
 
 void unpack_ucesb()
@@ -23,8 +24,8 @@ void unpack_ucesb()
 
 	/* Create source using ucesb for input ------------------ */
 
-	TString filename = "/data/r3b/r3broot_dev/lmd/run238*.lmd.gz";
-	TString outputFileName = "/tmp/run238_mapped_cal_deleteme.root";
+	TString filename = "/u/jtscheus/r3broot/data_s438b/run222_0811.lmd.gz";
+	TString outputFileName = "jo_test_fiber.root";
 	TString ntuple_options = "UNPACK:EVENTNO,UNPACK:TRIGGER,RAW";
 	TString ucesb_dir = getenv("UCESB_DIR");
 	TString ucesb_path = ucesb_dir + "/../upexps/s438b/s438b";
@@ -42,8 +43,7 @@ void unpack_ucesb()
 	    ucesb_path, (EXT_STR_h101 *)&ucesb_struct, sizeof(ucesb_struct));
 	source->SetMaxEvents(nev);
 	//source->AddReader(new R3BUnpackReader(&ucesb_struct));
-	source->AddReader(new R3BPspxReader(
-		(EXT_STR_h101_PSP *)&ucesb_struct.PSPX[0]));
+	source->AddReader(new R3BFiberReader(&ucesb_struct));
 	/*source->AddReader(new R3BNeulandTamexReader(&ucesb_struct));*/
 
 	/* ------------------------------------------------------ */
@@ -52,30 +52,6 @@ void unpack_ucesb()
 	FairRunOnline* run = new FairRunOnline(source);
 	run->SetOutputFile(outputFileName);
 
-	/* Runtime Database--------------------------------------- */
-	
-	FairRuntimeDb* rtdb=run->GetRuntimeDb();
-	
-	//Bool_t kParameterMerged = kTRUE;
-	//FairParAsciiFileIo* parInput = new  FairParAsciiFileIo(kParameterMerged);
-	FairParAsciiFileIo* parInput = new  FairParAsciiFileIo();
-	TList *parList = new TList();
-	parList->Add(new TObjString(pspxpar_dir+parPspxMappedFileName));
-	parList->Add(new TObjString(pspxpar_dir+parPspxCalFileName));
-	//parList->Add(new TObjString(pspxpar_dir+parPspxHitFileName));
-	parInput->open(parList);
-	rtdb->setFirstInput(parInput);
-	
-	//FairParAsciiFileIo* parInputMapped = new FairParAsciiFileIo();
-	//FairParAsciiFileIo* parInputCal = new FairParAsciiFileIo();
-	//parInputMapped->open((pspxpar_dir+parPspxMappedFileName).Data(),"in");
-	//parInputCal->open((pspxpar_dir+parPspxCalFileName).Data(),"in");
-
-	//rtdb->setFirstInput(parInputMapped);
-	//rtdb->setSecondInput(parInputCal);
-	
-        rtdb->print();
-	
 	/* Create ALADIN field map ------------------------------ */
 	R3BAladinFieldMap* magField = new R3BAladinFieldMap("AladinMaps");
 	Double_t fMeasCurrent = 2500.; // I_current [A]
@@ -85,25 +61,19 @@ void unpack_ucesb()
 	/* ------------------------------------------------------ */
 
 	/* Add analysis task ------------------------------------ */
-	//R3BLandRawAna* ana = new R3BLandRawAna("LandRawAna", 1);
-	//run->AddTask(ana);
-	//R3BFi4Mapped2Cal* Fi4Mapped2Cal = new R3BFi4Mapped2Cal("Fi4Mapped2Cal",1);
-	//run->AddTask(Fi4Mapped2Cal);
-	//R3BFi4Cal2Hit* Fi4Cal2Hit = new R3BFi4Cal2Hit("Fi4Cal2Hit",1);
-	//Fi4Cal2Hit->SetGeometry("");
-	//Fi4Cal2Hit->SetFiberWidth("");
-	//run->AddTask(Fi4Cal2Hit);
-	
-	//R3BPspxMapped2Cal* pspxMapped2Cal = new R3BPspxMapped2Cal("PspxMapped2Cal", 1);
-	//run->AddTask(pspxMapped2Cal);
-	//R3BPspxCal2Hit* pspxCal2Hit = new R3BPspxCal2Hit("PspxCal2Hit", 1);
-	//run->AddTask(pspxCal2Hit);
-	
+	R3BLandRawAna* ana = new R3BLandRawAna("LandRawAna", 1);
+	run->AddTask(ana);
+	R3BFi4Mapped2Cal* Fi4Mapped2Cal = new R3BFi4Mapped2Cal("Fi4Mapped2Cal",1);
+	run->AddTask(Fi4Mapped2Cal);
+	R3BFi4Cal2Hit* Fi4Cal2Hit = new R3BFi4Cal2Hit("Fi4Cal2Hit",1);
+	Fi4Cal2Hit->SetGeometry("");
+	Fi4Cal2Hit->SetFiberWidth("");
+	run->AddTask(Fi4Cal2Hit);
 	/* ------------------------------------------------------ */
 
 	/* Initialize ------------------------------------------- */
 	run->Init();
-	FairLogger::GetLogger()->SetLogScreenLevel("INFO");
+	FairLogger::GetLogger()->SetLogScreenLevel("WARNING");
 	/* ------------------------------------------------------ */
 
 	/* Runtime data base ------------------------------------ */
