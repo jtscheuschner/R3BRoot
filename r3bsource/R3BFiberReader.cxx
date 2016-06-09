@@ -89,7 +89,7 @@ Bool_t R3BFiberReader::Read()
 
 	
 	// loop over all detectors
-    for (int d=0;d<10;d++){//the 4 last detectors should be fiber 4 the rest is gfi!!!
+    for (int d=0;d<9;d++){//the 4 last detectors should be fiber 4 the rest is gfi!!!
 		
       uint32_t numChannels = data->fiberfour[d].tM; //?? tM// not necessarly number of hits! (b/c multi hit)
 		
