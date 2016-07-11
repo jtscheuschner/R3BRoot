@@ -28,7 +28,7 @@ class R3BFi4MappedItem : public TObject
     UChar_t fDetector; // 0..4
     UChar_t fMPPC   ;  // 0..64
     UInt_t  fEnergy;   // 0xfff is energy data, Anything in 0xfffff000 indicates an error or overflow
-    UInt_t  fTime;
+    Int_t  fTime;      // this can now be also negative
   public:
     ClassDef(R3BFi4MappedItem, 4)
 };

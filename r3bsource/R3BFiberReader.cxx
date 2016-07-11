@@ -89,7 +89,7 @@ Bool_t R3BFiberReader::Read()
 
 	
 	// loop over all detectors
-    for (int d=0;d<9;d++){//the 4 last detectors should be fiber 4 the rest is gfi!!!
+    for (int d=0;d<10;d++){//the 4 last detectors should be fiber 4 the rest is gfi!!!
 		
       uint32_t numChannels = data->fiberfour[d].tM; //?? tM// not necessarly number of hits! (b/c multi hit)
 		
@@ -108,7 +108,7 @@ Bool_t R3BFiberReader::Read()
 	  energy=energy-0x800000;//correct for the sign-bit
 	  new ((*fArray)[fArray->GetEntriesFast()])
 	    R3BFi4MappedItem(d,channel,
-			     energy,data->fiberfour[d].tv[curChannelStart]); 
+				     energy,data->fiberfour[d].tv[curChannelStart]-2048);//time can be negative and is set relative to the trigger-time. The signbit is such that it the time will be shifted to 2048+ 
 	  // det,channel,energy,time
 	  /*new ((*fArray)[fArray->GetEntriesFast()])
 	    R3BFi4MappedItem(d,channel,data->fiberfour[d].Ev[curChannelStart]); // det,channel,energy

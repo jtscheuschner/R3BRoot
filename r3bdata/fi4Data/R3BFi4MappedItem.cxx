@@ -16,7 +16,7 @@ R3BFi4MappedItem::R3BFi4MappedItem()
 R3BFi4MappedItem::R3BFi4MappedItem(	UChar_t detector, 
 					UInt_t mppc,
 					UInt_t energy,
-					UInt_t time)
+					Int_t  time)
 : fDetector(detector)
   , fMPPC(mppc)
   , fEnergy(energy)
