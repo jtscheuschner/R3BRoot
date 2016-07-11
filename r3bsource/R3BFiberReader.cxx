@@ -99,6 +99,7 @@ Bool_t R3BFiberReader::Read()
 	  uint32_t channel=data->fiberfour[d].tMI[i]; // or 1..65
 	  uint32_t nextChannelStart=data->fiberfour[d].tME[i];  // index in v for first item of next channel
 			
+<<<<<<< Updated upstream
 	  // if we had multi hit data, we would need to read
 	  // j=curChannelStart; j < nextChannelStart; j++.
 	  // For the FIBERs, however, we take the first hit only:
@@ -114,6 +115,20 @@ Bool_t R3BFiberReader::Read()
 	    R3BFi4MappedItem(d,channel,data->fiberfour[d].Ev[curChannelStart]); // det,channel,energy
 	  */
 	  curChannelStart=nextChannelStart;
+=======
+	  // we may have multi hit data,
+	  for(j=curChannelStart; j < nextChannelStart; j++){
+		uint32_t energy = data->fiberfour[d].Ev[j];
+		if(energy == 0xEEEEEE)continue;
+
+		energy=energy-0x800000;//correct for the sign-bit
+		new ((*fArray)[fArray->GetEntriesFast()])
+		    R3BFi4MappedItem(d,channel,
+				     energy,data->fiberfour[d].tv[curChannelStart]); 
+		  
+		curChannelStart=nextChannelStart;
+		}
+>>>>>>> Stashed changes
 	}
     }
 }
