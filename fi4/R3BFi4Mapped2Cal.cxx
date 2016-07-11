@@ -87,17 +87,17 @@ void R3BFi4Mapped2Cal::Exec(Option_t* option){
     UInt_t MPPC_bottom =  999999, Energy_bottom = 0, Time_bottom =  0;
 
     fiber = channel_1 + 16* (detector_1);
-    Energy_top = energy_1;
-    Energy_bottom = 0;
-    Time_top = time_1*fTfactor;
-    Time_bottom = 0;
 
     if( fxDirection[detector_1] ){//x-direction
       fiberdetpos = 1;
       MPPC_top     = channel_1 + 16* detector_1;
+      Time_top = time_1*fTfactor;
+      Energy_top = energy_1;
     }else{                        //y-direction
       fiberdetpos = 0;
       MPPC_bottom  = channel_1 + 16* detector_1;
+      Time_bottom = time_1*fTfactor;
+      Energy_bottom = energy_1;
     }
 
     new ((*fCalItems)[fCalItems->GetEntriesFast()])
