@@ -13,7 +13,7 @@ class R3BFi4MappedItem : public TObject
     R3BFi4MappedItem();
 
     // Standard Constructor
-    R3BFi4MappedItem(UChar_t detector, UInt_t mppc, UInt_t energy, UInt_t time);
+    R3BFi4MappedItem(UChar_t detector, UInt_t mppc, UInt_t energy, Int_t time);
 
     // Destructor
     virtual ~R3BFi4MappedItem() { }
@@ -22,7 +22,7 @@ class R3BFi4MappedItem : public TObject
     inline const UChar_t& GetDetector() const { return fDetector; }
     inline const UChar_t& GetChannel()  const { return fMPPC;  }
     inline const UInt_t&  GetEnergy()   const { return fEnergy;   }
-    inline const UInt_t&  GetTime()     const { return fTime;     }
+    inline const Int_t&  GetTime()     const { return fTime;     }
 
   private:
     UChar_t fDetector; // 0..4

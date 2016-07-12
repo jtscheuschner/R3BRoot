@@ -46,8 +46,8 @@ class R3BFi4Mapped2Cal : public FairTask
     //const static UInt_t fNMPPC = fNDet*fNChannels;  // FIXME: commented out because of error with ROOT 5 dictionary
     const Float_t fTfactor = 1;
     UInt_t fMin_E = 0;
-    UInt_t fMin_T = 0;
-    UInt_t fMax_T = 10000;
+    Int_t fMin_T = 0;
+    Int_t fMax_T = 10000;
     Float_t fGain[fNDet][fNChannels];
     Bool_t fxDirection[fNDet];
     //UInt_t fFiber_mapping[fNMPPC][fNMPPC];

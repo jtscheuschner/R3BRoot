@@ -101,7 +101,7 @@ Bool_t R3BFiberReader::Read()
 			
 
 	  // we may have multi hit data,
-	  for(j=curChannelStart; j < nextChannelStart; j++){
+	  for(int j=curChannelStart; j < nextChannelStart; j++){
 		uint32_t energy = data->fiberfour[d].Ev[j];
 		if(energy == 0xEEEEEE)continue;
 

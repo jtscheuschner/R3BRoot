@@ -80,7 +80,7 @@ void R3BFi4Mapped2Cal::Exec(Option_t* option){
     UInt_t detector_1 = mItem->GetDetector() - detector_offset;
     UInt_t channel_1  = mItem->GetChannel();
     UInt_t energy_1   = fGain[detector_1][channel_1]*mItem->GetEnergy();
-    UInt_t time_1     = fGain[detector_1][channel_1]*mItem->GetTime();
+    Int_t time_1      = fGain[detector_1][channel_1]*mItem->GetTime();
     if( !BasicCut(energy_1,time_1) )continue;
 
     UInt_t MPPC_top    =  999999, Energy_top = 0,    Time_top    =  999999, fiber = 999999;
