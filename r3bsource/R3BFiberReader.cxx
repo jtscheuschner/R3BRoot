@@ -106,12 +106,14 @@ Bool_t R3BFiberReader::Read()
 		if(energy == 0xEEEEEE)continue;
 
 		energy=energy-0x800000;//correct for the sign-bit
+		int32_t time = data->fiberfour[d].tv[j]; 
+		if(time>2048)time=2048-time;
+		
 		new ((*fArray)[fArray->GetEntriesFast()])
-		    R3BFi4MappedItem(d,channel,
-				     energy,data->fiberfour[d].tv[curChannelStart]); 
-		  
-		curChannelStart=nextChannelStart;
+		    R3BFi4MappedItem(d,channel,	
+				     energy,time); 
 		}
+	curChannelStart=nextChannelStart;
 	}
     }
 }
